@@ -14,7 +14,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::all();
+
+        return view('products.index')
+            -> with('products', $products);
     }
 
     /**
@@ -24,7 +27,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -35,7 +38,17 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request -> validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+            'article' => 'required|string|max:255'
+        ]);
+
+        $product = Product::create($validated);
+
+        return redirect()->route('products.show', $product->id)
+            ->with('success', 'Product created successfully.');
     }
 
     /**
@@ -59,7 +72,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit')
+            ->with('product', $product);
     }
 
     /**
@@ -71,7 +85,17 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $validated = $request -> validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+            'article' => 'required|string|max:255'
+        ]);
+
+        $product->update($validated);
+
+        return redirect()->route('products.show', $product->id)
+            ->with('success', 'Product updated successfully.');
     }
 
     /**
@@ -82,6 +106,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return redirect()->route('products.index')
+            ->with('success', 'Product deleted successfully.');
     }
 }

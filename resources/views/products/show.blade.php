@@ -1,11 +1,20 @@
 @extends('layout.app')
 
-@section('title', 'Товар')
+@section('title', 'Карточка товара')
 
 @section('content')
-    <h1>{{ $product->name }}</h1>
-    <p> {{ $product->article }}</p>
-    <p> {{ $product->price }}</p>
-    <p> {{ $product->description }}</p>
+    <div class="card">
+        <div class="card-header">
+            {{ $product->name }}
+        </div>
+        <div class="card-body">
+            <p>Название: {{$product->name}}</p>
+            <p>Артикул: {{$product->article}}</p>
+            <p>Описание: {{$product->description}}</p>
+            <p>Цена: {{$product->price}}</p>
+            <a href="{{ route('products.index') }}">
+                <button class="btn btn-primary">Назад</button>
+            </a>
+        </div>
+    </div>
 @endsection
-
