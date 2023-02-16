@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $article
  * @property string|null $description
  * @property float $price
- * @property int $user_id
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\ProductFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
@@ -39,10 +38,7 @@ class Product extends Model
         'name',
         'article',
         'price',
-        'description'
+        'description',
+        'user_id'
     ];
-
-    public function user() {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
 }

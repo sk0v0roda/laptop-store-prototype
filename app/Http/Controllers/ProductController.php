@@ -27,6 +27,9 @@ class ProductController extends Controller
      */
     public function create()
     {
+        if(!auth()->user()->hasPermissionTo('product.destroy')) {
+            return abort('403');
+        }
         return view('products.create');
     }
 
@@ -42,11 +45,13 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string',
-            'article' => 'required|string|max:255',
+            'article' => 'required|string|max:255'
         ]);
 
         $product = Product::create($validated);
-
+        if(!auth()->user()->hasPermissionTo('product.destroy')) {
+            return abort('403');
+        }
         return redirect()->route('products.show', $product->id)
             ->with('success', 'Product created successfully.');
     }
@@ -71,6 +76,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        if(!auth()->user()->hasPermissionTo('product.destroy')) {
+            return abort('403');
+        }
         return view('products.edit')
             ->with('product', $product);
     }

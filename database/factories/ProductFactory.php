@@ -17,14 +17,12 @@ class ProductFactory extends Factory
      */
     public function definition()
     {
-        $users = User::all()->pluck('id')->toArray();
-
         return [
             'name' => $this->faker->name,
             'article' => $this->faker->randomNumber(8),
             'price' => $this->faker->randomFloat(2, 0, 1000),
             'description' => $this->faker->boolean ? $this->faker->text : null,
-            'user_id' => $this->faker->randomElement($users)
+            'user_id' => 1
         ];
     }
 }

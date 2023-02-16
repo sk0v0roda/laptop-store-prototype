@@ -24,8 +24,12 @@
                             <a href="#" class="btn btn-primary"> Купить за {{ $product->price }} </a>
                             @endrole
                             @role('admin')
-                            <a href="#" class="btn btn-secondary"> Редактировать </a>
-                            <a href="#" class="btn btn-danger"> Удалить </a>
+                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-secondary"> Редактировать </a>
+                            <form method="POST" action="{{ route('products.destroy', $product->id) }}">
+                                @csrf
+                                @method("DELETE")
+                                <button type="submit" class="btn btn-danger"> Удалить </button>
+                            </form>
                             @endrole
                         </div>
                     </div>
@@ -40,6 +44,7 @@
             align-items: stretch;
             margin: 10px 5px;
             height: 100%;
+            padding-bottom: 10px;
         }
 
         .card-footer {
@@ -48,6 +53,9 @@
 
         .btn {
             padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .col-md-4 {
             margin-bottom: 10px;
         }
     </style>
