@@ -3,47 +3,52 @@
 @section('title', 'Карточка товара')
 
 @section('content')
-    <button class="btn btn-success">Создать товар</button>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Название</th>
-            <th scope="col">Артикул</th>
-            <th scope="col">Описание</th>
-            <th scope="col">Цена</th>
-            <th scope="col">Действия</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($products as $product)
-            <tr>
-                <td>{{ $product->id }}</td>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->article }}</td>
-                <td>{{ $product->description  }}</td>
-                <td>{{ $product->price  }}</td>
-                <td>
-                    @can('product.show')
-                        <a href="{{ route('products.show', $product->id) }}">
-                            <button class="btn btn-primary btn-sm">Просмотреть</button>
-                        </a>
-                    @endcan
-                    <a href="{{ route('products.edit', $product->id) }}">
-                        <button class="btn btn-info btn-sm">Изменить</button>
-                    </a>
-                    @can('product.destroy')
-                        <a>
-                            <form method="POST" action="{{ route('products.destroy', $product->id) }}">
-                                @csrf
-                                @method("DELETE")
-                                <button class="btn btn-danger btn-sm">Удалить</button>
-                            </form>
-                        </a>
-                    @endcan
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+    @role('admin')
+    <a href="{{ route('products.create') }}">
+        <button class="btn btn-success mb-10">Создать товар</button>
+    </a>
+    @endrole
+    <body>
+    <div class="container">
+        <div class="row">
+            @foreach($products as $product)
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body p-5">
+                            <h5 class="card-title">{{ $product->name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Артикул - {{ $product->article }}</h6>
+                            <p class="card-text">{{ $product->description }}</p>
+                        </div>
+                        <div class="card-footer border-0 p-0 text-center">
+                            @role('customer')
+                            <a href="#" class="btn btn-primary"> Купить за {{ $product->price }} </a>
+                            @endrole
+                            @role('admin')
+                            <a href="#" class="btn btn-secondary"> Редактировать </a>
+                            <a href="#" class="btn btn-danger"> Удалить </a>
+                            @endrole
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    </body>
+    <style>
+        .card {
+            display: flex;
+            align-items: stretch;
+            margin: 10px 5px;
+            height: 100%;
+        }
+
+        .card-footer {
+            background-color: #ffffff
+        }
+
+        .btn {
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
 @endsection

@@ -42,7 +42,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string',
-            'article' => 'required|string|max:255'
+            'article' => 'required|string|max:255',
         ]);
 
         $product = Product::create($validated);
