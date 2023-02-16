@@ -209,6 +209,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'Cart' => Jackiedo\Cart\Facades\Cart::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

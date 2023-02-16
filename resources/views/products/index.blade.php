@@ -21,14 +21,20 @@
                         </div>
                         <div class="card-footer border-0 p-0 text-center">
                             @role('customer')
-                            <a href="#" class="btn btn-primary"> Купить за {{ $product->price }} </a>
+                            <form method="POST" action="{{ route('cart.put') }}">
+                                @csrf
+                                @method("PUT")
+                                <input type="hidden" name="product_id" value="{{ $product->id }}"/>
+                                <button type="submit" class="btn btn-primary"> Купить за {{ $product->price }} </button>
+                            </form>
                             @endrole
                             @role('admin')
-                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-secondary"> Редактировать </a>
+                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-secondary">
+                                Редактировать </a>
                             <form method="POST" action="{{ route('products.destroy', $product->id) }}">
                                 @csrf
                                 @method("DELETE")
-                                <button type="submit" class="btn btn-danger"> Удалить </button>
+                                <button type="submit" class="btn btn-danger"> Удалить</button>
                             </form>
                             @endrole
                         </div>
@@ -55,6 +61,7 @@
             padding-bottom: 10px;
             margin-bottom: 10px;
         }
+
         .col-md-4 {
             margin-bottom: 10px;
         }

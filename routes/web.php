@@ -19,6 +19,10 @@ Route::get('/', function () {
 
 Route::resource('products', 'App\Http\Controllers\ProductController');
 
+Route::get('cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+
+Route::put('cart', [\App\Http\Controllers\CartController::class, 'put'])->name('cart.put');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
