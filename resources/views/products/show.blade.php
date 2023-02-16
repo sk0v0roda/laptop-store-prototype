@@ -12,6 +12,9 @@
             <p>Артикул: {{$product->article}}</p>
             <p>Описание: {{$product->description}}</p>
             <p>Цена: {{$product->price}}</p>
+            @auth
+                <p>Кто создал: {{$product->user->name}}</p>
+            @endauth
             <a href="{{ route('products.index') }}">
                 <button class="btn btn-primary">Назад</button>
             </a>

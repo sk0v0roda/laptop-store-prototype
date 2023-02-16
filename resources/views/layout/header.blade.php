@@ -5,7 +5,9 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 
                 <li><a href="#" class="nav-link px-2 link-secondary">Главная</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">Товары</a></li>
+                @auth
+                <li><a href="{{ route('products.index') }}" class="nav-link px-2 link-dark">Товары</a></li>
+                @endauth
 
             </ul>
 
@@ -15,11 +17,20 @@
                     <img src="https://github.com/mdo.png" alt="mdo" class="rounded-circle" width="32" height="32">
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">Профиль</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#">Выйти</a></li>
+                    @guest
+                        <li><a class="dropdown-item" href="{{ route('login') }}">Войти</a></li>
+                    @else
+                        <li><a class="dropdown-item" href="#">Профиль</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item">Выйти</button>
+                            </form>
+                        </li>
+                    @endguest
                 </ul>
             </div>
         </div>

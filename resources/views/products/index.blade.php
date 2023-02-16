@@ -24,19 +24,23 @@
                 <td>{{ $product->description  }}</td>
                 <td>{{ $product->price  }}</td>
                 <td>
-                    <a href="{{ route('products.show', $product->id) }}">
-                        <button class="btn btn-primary btn-sm">Просмотреть</button>
-                    </a>
+                    @can('product.show')
+                        <a href="{{ route('products.show', $product->id) }}">
+                            <button class="btn btn-primary btn-sm">Просмотреть</button>
+                        </a>
+                    @endcan
                     <a href="{{ route('products.edit', $product->id) }}">
                         <button class="btn btn-info btn-sm">Изменить</button>
                     </a>
-                    <a>
-                        <form method="POST" action="{{ route('products.destroy', $product->id) }}">
-                            @csrf
-                            @method("DELETE")
-                            <button class="btn btn-danger btn-sm">Удалить</button>
-                        </form>
-                    </a>
+                    @can('product.destroy')
+                        <a>
+                            <form method="POST" action="{{ route('products.destroy', $product->id) }}">
+                                @csrf
+                                @method("DELETE")
+                                <button class="btn btn-danger btn-sm">Удалить</button>
+                            </form>
+                        </a>
+                    @endcan
                 </td>
             </tr>
         @endforeach

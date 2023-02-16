@@ -61,7 +61,6 @@ class ProductController extends Controller
     {
         return view('products.show')
             -> with('product', $product);
-
     }
 
     /**
@@ -85,6 +84,10 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        if(!auth()->user()->hasPermissionTo('product.destroy')) {
+            return abort('403');
+        }
+
         $validated = $request -> validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
@@ -106,6 +109,9 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        if(!auth()->user()->hasPermissionTo('product.destroy')) {
+            return abort('403');
+        }
         $product->delete();
 
         return redirect()->route('products.index')
