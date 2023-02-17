@@ -12,12 +12,20 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $search = $request->input('search');
+
+        if (!empty($search)) {
+            $products = Product::where('name', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%")
+                ->get();
+        } else {
+            $products = Product::all();
+        }
 
         return view('products.index')
-            -> with('products', $products);
+            ->with('products', $products);
     }
 
     /**
@@ -27,7 +35,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        if(!auth()->user()->hasPermissionTo('product.destroy')) {
+        if (!auth()->user()->hasPermissionTo('product.destroy')) {
             return abort('403');
         }
         return view('products.create');
@@ -36,12 +44,12 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $validated = $request -> validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string',
@@ -49,7 +57,7 @@ class ProductController extends Controller
         ]);
 
         $product = Product::create($validated);
-        if(!auth()->user()->hasPermissionTo('product.destroy')) {
+        if (!auth()->user()->hasPermissionTo('product.destroy')) {
             return abort('403');
         }
         return redirect()->route('products.show', $product->id)
@@ -59,24 +67,24 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
     {
         return view('products.show')
-            -> with('product', $product);
+            ->with('product', $product);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $product)
     {
-        if(!auth()->user()->hasPermissionTo('product.destroy')) {
+        if (!auth()->user()->hasPermissionTo('product.destroy')) {
             return abort('403');
         }
         return view('products.edit')
@@ -86,17 +94,17 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product)
     {
-        if(!auth()->user()->hasPermissionTo('product.destroy')) {
+        if (!auth()->user()->hasPermissionTo('product.destroy')) {
             return abort('403');
         }
 
-        $validated = $request -> validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'description' => 'required|string',
@@ -112,12 +120,12 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)
     {
-        if(!auth()->user()->hasPermissionTo('product.destroy')) {
+        if (!auth()->user()->hasPermissionTo('product.destroy')) {
             return abort('403');
         }
         $product->delete();

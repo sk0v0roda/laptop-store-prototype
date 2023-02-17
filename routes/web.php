@@ -19,9 +19,15 @@ Route::get('/', function () {
 
 Route::resource('products', 'App\Http\Controllers\ProductController');
 
-Route::get('cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
 
-Route::put('cart', [\App\Http\Controllers\CartController::class, 'put'])->name('cart.put');
+    Route::put('cart', [\App\Http\Controllers\CartController::class, 'put'])->name('cart.put');
+
+    Route::delete('cart', [\App\Http\Controllers\CartController::class, 'remove'])->name('cart.removeItem');
+
+    Route::any('cart/create', [App\Http\Controllers\CartController::class, 'create']);
+});
 
 Auth::routes();
 

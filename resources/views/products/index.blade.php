@@ -8,11 +8,17 @@
         <button class="btn btn-success mb-10">Создать товар</button>
     </a>
     @endrole
+    <form method="GET" action="{{ route('products.index') }}">
+        <input type="text" class="form-control" name="search" id="search" placeholder="Поиск по названию" style="width: 25%">
+        <div style="padding-top: 5px">
+            <button type="submit" class="btn btn-secondary">Искать</button>
+        </div>
+    </form>
     <body>
     <div class="container">
         <div class="row">
             @foreach($products as $product)
-                <div class="col-md-4">
+                <div class="col-md-4" style="background-color:#cbd5e0">
                     <div class="card">
                         <div class="card-body p-5">
                             <h5 class="card-title">{{ $product->name }}</h5>
@@ -20,6 +26,9 @@
                             <p class="card-text">{{ $product->description }}</p>
                         </div>
                         <div class="card-footer border-0 p-0 text-center">
+                            @guest
+                                <h3><span class="badge bg-secondary">Цена - {{ $product->price }}</span></h3>
+                            @endguest
                             @role('customer')
                             <form method="POST" action="{{ route('cart.put') }}">
                                 @csrf
